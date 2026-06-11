@@ -1,6 +1,44 @@
-import Image from "next/image";
+'use client';
 
-export default function Page() {
+import api from '@/lib/axios';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState, FormEvent } from 'react';
+
+export default function Login() {
+	const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({ 
+    email: '', 
+    password: '' 
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLoading(true);
+
+    const response = await api.post(
+     "/login", {...formData}
+     );
+
+     const data = response.data;
+
+     if(data.type == 'error'){
+        alert(data.msg);
+		setLoading(false);
+        return;
+     }
+
+     localStorage.setItem('token', data.token);
+     alert(data.msg);
+     router.push('/feed');
+  }
+
 	return <section className="_social_login_wrapper _layout_main_wrapper">
 		<div className="_shape_one">
 			<img src="/assets/images/shape1.svg" alt="" className="_shape_img"/>
@@ -37,18 +75,18 @@ export default function Page() {
 							</button>
 							<div className="_social_login_content_bottom_txt _mar_b40"> <span>Or</span>
 							</div>
-							<form className="_social_login_form">
+							<form className="_social_login_form" onSubmit={submit}>
 								<div className="row">
 									<div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div className="_social_login_form_input _mar_b14">
 											<label className="_social_login_label _mar_b8">Email</label>
-											<input type="email" className="form-control _social_login_input" required/>
+											<input type="email" className="form-control _social_login_input" name="email" value={formData.email} onChange={handleChange} required/>
 										</div>
 									</div>
 									<div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div className="_social_login_form_input _mar_b14">
 											<label className="_social_login_label _mar_b8">Password</label>
-											<input type="password" className="form-control _social_login_input" required/>
+											<input type="password" className="form-control _social_login_input" name="password" value={formData.password} onChange={handleChange} required/>
 										</div>
 									</div>
 								</div>
@@ -68,7 +106,7 @@ export default function Page() {
 								<div className="row">
 									<div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
 										<div className="_social_login_form_btn _mar_t40 _mar_b60">
-											<button type="submit" className="_social_login_form_btn_link _btn1">Login now</button>
+											<button type="submit" className="_social_login_form_btn_link _btn1" disabled={loading}>{loading ? 'Please Wait...' : 'Login Now'}</button>
 										</div>
 									</div>
 								</div>
@@ -76,7 +114,7 @@ export default function Page() {
 							<div className="row">
 								<div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 									<div className="_social_login_bottom_txt">
-										<p className="_social_login_bottom_txt_para">Dont have an account? <a href="/registration">Create New Account</a>
+										<p className="_social_login_bottom_txt_para">Dont have an account? <Link href="/registration">Create New Account</Link>
 										</p>
 									</div>
 								</div>

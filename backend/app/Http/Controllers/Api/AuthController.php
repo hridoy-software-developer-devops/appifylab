@@ -7,17 +7,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
+        $rules = [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6'],
-        ]);
+        ];
+        $validator = Validator::make($request->all(),$rules);
+        if ($validator->fails()) return response()->json(['type'=>'error','msg'=>$validator->errors()->first()]);
 
         $user = User::create([
             'first_name' => $request->first_name,
@@ -26,11 +29,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = auth()->login($user);
+        $token = auth('api')->login($user);
 
         return response()->json([
-            'success' => true,
-            'message' => 'Registration successful',
+            'type' => 'success',
+            'msg' => 'Registration successful',
             'user' => $user,
             'token'=>$token
         ], 201);
@@ -40,15 +43,15 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email','password');
 
-        if(!$token = auth()->attempt($credentials)){
-            return response()->json([
-                'message'=>'Invalid credentials'
-            ],401);
+        if(!$token = auth('api')->attempt($credentials)){
+            return response()->json(['type'=>'error','msg'=>'Invalid credentials']);
         }
 
         return response()->json([
-            'token'=>$token,
-            'user'=>auth()->user()
+            'type' => 'success',
+            'msg' => 'Login successful',
+            'token'=> $token,
+            'user'=> auth()->user()
         ]);
     }
 
