@@ -1,6 +1,7 @@
 "use client";
 
 import api from '@/lib/axios';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -143,9 +144,9 @@ const createCommentLike = async (postId: number, commentId: number) => {
       <nav className="navbar navbar-expand-lg navbar-light _header_nav _padd_t10">
         <div className="container _custom_container">
           <div className="_logo_wrap">
-            <a className="navbar-brand" href="feed.html">
+            <Link className="navbar-brand" href="/feed">
               <img src="assets/images/logo.svg" alt="Image" className="_nav_logo"/>
-            </a>
+            </Link>
           </div>
           <button className="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span className="navbar-toggler-icon"></span>
           </button>
@@ -849,7 +850,7 @@ const createCommentLike = async (postId: number, commentId: number) => {
                         See all
                       </a>
                     </div>
-                    <div className="_left_inner_event_card_link" href="event-single.html">
+                    <div className="_left_inner_event_card_link">
                       <div className="_left_inner_event_card">
                         <div className="_left_inner_event_card_iamge">
                           <img src="assets/images/feed_event1.png" alt="Image" className="_card_img"/>
@@ -869,7 +870,7 @@ const createCommentLike = async (postId: number, commentId: number) => {
                         </div>
                       </div>
                     </div>
-                    <div className="_left_inner_event_card_link" href="event-single.html">
+                    <div className="_left_inner_event_card_link">
                       <div className="_left_inner_event_card">
                         <div className="_left_inner_event_card_iamge">
                           <img src="assets/images/feed_event1.png" alt="Image" className="_card_img"/>
@@ -1327,7 +1328,7 @@ const createCommentLike = async (postId: number, commentId: number) => {
                             <div className="_total_reactions">
 															<div className="_total_react">
 																<span className="_reaction_like">
-																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
 																</span>
 															</div>
 															<span className="_total">{comment?.like || 0}</span>
