@@ -110,6 +110,16 @@ const submitComment = async (
 };
 
 
+const createCommentLike = async (postId: number, commentId: number) => {
+  try {
+    await api.post(`/posts/${postId}/comments/${commentId}/like`);
+    loadPosts();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
   return (
     <div className="_layout _layout_main_wrapper">
     <div className="_layout_mode_swithing_btn">
@@ -1309,12 +1319,20 @@ const submitComment = async (
                             <div className="_comment_reply">
                               <div className="_comment_reply_num">
                                 <ul className="_comment_reply_list">
-                                  <li><span>Like.</span></li>
+                                  <li onClick={() => createCommentLike(post.id, comment.id)}><span>Like.</span></li>
                                   <li><span>Reply.</span></li>
                                   <li><span>Share</span></li>
                                 </ul>
                               </div>
                             </div>
+                            <div className="_total_reactions">
+															<div className="_total_react">
+																<span className="_reaction_like">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+																</span>
+															</div>
+															<span className="_total">{comment?.like || 0}</span>
+														</div>
                           </div>
                         </div>
                       </div>

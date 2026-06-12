@@ -26,4 +26,8 @@ class CommentController extends Controller
             'comment' => $comment->load('user')
         ]);
     }
+
+    public function like($postId,$commentId){
+    Comment::where('id',$commentId)->increment('like');
+    }
 }
