@@ -9,7 +9,15 @@ use App\Http\Controllers\Controller;
 class PostController extends Controller
 {
    public function index(){
-    return Post::with('user')->latest()->paginate(20);
+    return Post::with([
+        'user',
+        'comments' => function ($query) {
+            $query->latest();
+        },
+        'comments.user'
+    ])
+    ->latest()
+    ->paginate(20);
    }
 
    public function store(Request $request)
