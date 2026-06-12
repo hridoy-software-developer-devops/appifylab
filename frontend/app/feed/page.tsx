@@ -67,7 +67,6 @@ const createNewPost = async () => {
       setContent('');
     setVisibility('public');
     setLoading(false);
-    alert('Post Create Successfully');
     await loadPosts();
    }catch (error) {
       console.log(error);
