@@ -10,7 +10,8 @@ class Comment extends Model
         'post_id',
         'user_id',
         'parent_id',
-        'comment'
+        'comment',
+        'like'
     ];
 
     public function user()
